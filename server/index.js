@@ -14,14 +14,6 @@ const connection = mysql.createConnection({
     database: 'ibiza'
 });
 
-const pool  = mysql.createPool({
-    connectionLimit : 10,
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'ibiza'
-});
-
 app.use(cors());
 
 connection.connect(err => {
