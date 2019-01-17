@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const myPlaintextPassword = 's0/\/\P4$$w0rD';
 
 const app = express();
 
@@ -38,6 +41,30 @@ app.get('/products/add', (req,res) => {
     });
 });
 
+app.get('/login/get', (req,res) => {
+    const { email, password } = req.query;
+    const SELECT_USERS_QUERY = `SELECT * FROM users WHERE email = '${email}' and password = '${password}'`;
+    connection.query(SELECT_USERS_QUERY, (err, results) => {
+        if (err) {
+            return res.send(err);
+        } else if (results.length) {
+            return res.send(results);
+        }
+    });
+});
+
+app.get('/register/add', (req,res) => {
+    const { first_name, last_name, email, password, created, modified } = req.query;
+    const INSERT_USER_QUERY = `INSERT INTO users (first_name, last_name, email, password, created, modified ) 
+    VALUES('${first_name}', '${last_name}', '${email}', '${password}', '${created}', '${modified}')`;
+    connection.query(INSERT_USER_QUERY, (err, results) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.send('successfully added user');
+        }
+    });
+});
 
 app.get('/products', (req,res) => {
     connection.query(SELECT_ALL_PRODUCTS_QUERY, (err, results) => {

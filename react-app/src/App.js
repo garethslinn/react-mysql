@@ -1,57 +1,34 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Home from './pages/Home';
 import './App.css';
 
-class App extends Component {
+const App = () => {
+    return (
+        <Router>
+            <div>
+                <ul>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/register">Register</Link>
+                    </li>
+                    <li>
+                        <Link to="/login">Login</Link>
+                    </li>
+                </ul>
 
-    state = {
-        products: [],
-        product: {
-            name: 'sampleName',
-            price: 2
-        }
-    };
+                <hr />
 
-    componentDidMount() {
-        this.getProducts();
-    }
-
-    getProducts = (e) => {
-        fetch('http://localhost:4000/products')
-            .then(response => response.json())
-            .then(response => this.setState({ products: response.data }))
-            .catch(err => console.log(err))
-    };
-
-    addProduct = _ => {
-        const { product } = this.state;
-        fetch(`http://localhost:4000/products/add?name=${product.name}&price=${product.price}`)
-            .then(this.getProducts)
-            .catch(err => console.log(err))
-    };
-
-    renderProducts = ({ product_id, name, price }) => <div key={product_id}>{name} <span>{price}</span></div>;
-
-    render() {
-        const { products, product } = this.state;
-        return (
-          <div className="App">
-              {products.map(this.renderProducts)}
-
-              <div>
-                  <input
-                      value={product.name}
-                      onChange={e => this.setState({product: { ...product, name: e.target.value }})}
-                  />
-                  <input
-                      value={product.price}
-                      onChange={e => this.setState({product: { ...product, price: e.target.value }})}
-                  />
-                  <button onClick={this.addProduct}>Add</button>
-              </div>
-          </div>
-        );
-    }
+                <Route exact path="/" component={Home} />
+                <Route path="/register" component={Register} />
+                <Route path="/login" component={Login} />
+            </div>
+        </Router>
+    );
 }
 
 export default App;

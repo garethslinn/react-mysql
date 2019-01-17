@@ -30,3 +30,9 @@
     transform: rotate(360deg);
   }
 }
+
+.hide {
+  display: none;
+}
+
+input { display: block; clear: both; margin-bottom: 10px; }
